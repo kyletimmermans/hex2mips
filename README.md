@@ -3,6 +3,7 @@
 <div>Can currently deal with the following instructions:</div>
 add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, mult, multu, div, divu, xor, jr, syscall, break, beq, bne, addi, addiu, andi, ori, slti, sltiu, lui, lw, sw, xori, lb, lbu, j, jal
 
+</br>
 
 <div>Recognizes the current registers:</div>
 $zero,
