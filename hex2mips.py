@@ -16,27 +16,31 @@ register_dict = {"00000":"$zero", "00001":"$at", "00010":"$v0", "00011":"$v1", "
                  "10000":"$s0", "10001":"$s1", "10010":"$s2", "10011":"$s3", "10100":"$s4", "10101":"$s5", "10110":"$s6", "10111":"$s7",
                  "11000":"$t8", "11001":"$t9", "11010":"$k0", "11011":"$k1", "11100":"$gp", "11101":"$sp", "11110":"fp", "11110":"$ra"}
 
-print("hex2mips by @KyleTimmermans\n")
-hex = input("Enter Hex Code: ")
+# Fix the order of the input while loop below
+def sanitize():
+    global letters
+    while True:  # Keep going until true
+        hex = input("Enter Hex Code: ")
+        if hex[0:2] == "0x":  # Remove 0x if present and non hex code
+            hex = hex[2:]
+        letters = list(letters)  # Make iterable and sliceable
+        check = [item for item in (letters[6:25] or letters[32:52]) if(item in hex)]  #  Check for non-hex chars in 'hex' string
+        if check or len(hex) > 8:  # if check is true or length too long
+            print("Non-Hexadecimal Character(s) Found or Hex-Code too long")
+            print("Try Again")
+        else:
+            break
+    # Convert hexadecimal to binary by converting to int
+    bin = "{0:08b}".format(int(hex, 16))
+    return bin
 
-if hex[0:2] == "0x":  # Remove 0x if present and non hex code
-    hex = hex[2:]
-
-letters = list(letters)  # Make iterable and sliceable
-check = [item for item in (letters[6:25] or letters[32:52]) if(item in hex)]  #  Check for non-hex chars in 'hex' string
-
-if check:  # if check is true
-    print("Non-Hexadecimal Character(s) Found, Exiting Program...")
-    exit(0)
-
-# Convert hexadecimal to binary by converting to int
-bin = "{0:08b}".format(int(hex, 16))
 
 # Check instruction type
-if bin[0:6] == "000000":  # R-Formats always start with an op-code of "000000"
-    rs, rt, rd, shamt, funct = bin[6:11], bin[11:16], bin[16:21], bin[21:26], bin[26:32]
+def h2m(bin)
+    if bin[0:6] == "000000":  # R-Formats always start with an op-code of "000000"
+        rs, rt, rd, shamt, funct = bin[6:11], bin[11:16], bin[16:21], bin[21:26], bin[26:32]
     if funct == "001101":  # Break case
-        print("This is non-format system instruction")
+        print("This is a non-format system instruction")
     if shamt == "00000":  # Normal case
         print("This is an R-Format MIPS Instruction")
     else:  # For sll and srl
@@ -45,21 +49,20 @@ if bin[0:6] == "000000":  # R-Formats always start with an op-code of "000000"
         print("This is an R-Format MIPS Instruction")
     if rs and rt and rd and shamt == "00000" and funct == "001100":  # Create special case for syscall
         print("This is non-format system instruction")
-elif bin[0:6] == "000010" or "000011":  # J-Formats are always these two opcodes
-    op, rs, rt, immediate =
-    print("This is a J-Format MIPS Instruction")
-else:  # I-Formats are everything else
-    op, address =
-    print("This is an I-Format MIPS Instruction")
+    elif bin[0:6] == "000010" or "000011":  # J-Formats are always these two opcodes
+        op, rs, rt, immediate =
+        print("This is a J-Format MIPS Instruction")
+    else:  # I-Formats are everything else
+        op, address =
+        print("This is an I-Format MIPS Instruction")
 
 '''
 # Driver
 print("hex2mips by @KyleTimmermans\n")
 repeat = 'y'  # Go into loop off start
 while repeat == 'Y' or 'y':
-    hex = input("Enter Hex Code: ")
-    hex = sanitize(hex)
-    instruction = h2m(hex)
+    bin = sanitize()
+    instruction = h2m(bin)
     print(instruction+"\n")
     repeat = input("Convert more hex values? (Y/n): ")
 '''
