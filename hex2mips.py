@@ -3,7 +3,7 @@ from string import ascii_letters as letters  # a-zA-Z
 # For R-Types
 functcode_dict = {"100000":"add", "100001":"addu", "100010":"sub", "100011":"subu", "100100":"and", "100100":"or", "100111":"nor",
                   "101010":"slt", "101011":"sltu", "000000":"sll", "000010":"srl", "011000":"mult", "011001":"multu", "011010":"div",
-                  "011011":"divu", "100110":"xor", "001000":"jr", "001100":"syscall"}
+                  "011011":"divu", "100110":"xor", "001000":"jr", "001100":"syscall", "001101":"break"}
 
 # For I/J-Type
 opcode_dict = {"000100":"beq", "000101":"bne", "001000":"addi", "001001":"addiu", "001100":"andi", "001101":"ori", "001010":"slti",
@@ -32,11 +32,11 @@ def sanitize():
             break
     # Convert hexadecimal to binary by converting to int
     bin = "{0:08b}".format(int(hex, 16))
-    return bin
+    return bin  # Return the final binary string for h2m() to take
 
 
 # Check instruction type
-def h2m(bin)
+def h2m(bin):   # returns instruction
     if bin[0:6] == "000000":  # R-Formats always start with an op-code of "000000"
         rs, rt, rd, shamt, funct = bin[6:11], bin[11:16], bin[16:21], bin[21:26], bin[26:32]
     if funct == "001101":  # Break case
@@ -56,7 +56,9 @@ def h2m(bin)
         op, address =
         print("This is an I-Format MIPS Instruction")
 
-'''
+    ####### return instruction #######
+
+
 # Driver
 print("hex2mips by @KyleTimmermans\n")
 repeat = 'y'  # Go into loop off start
@@ -64,5 +66,4 @@ while repeat == 'Y' or 'y':
     bin = sanitize()
     instruction = h2m(bin)
     print(instruction+"\n")
-    repeat = input("Convert more hex values? (Y/n): ")
-'''
+    repeat = input("Convert more hex values? (Y/n): \n")
