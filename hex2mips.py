@@ -31,39 +31,43 @@ def sanitize():
         else:
             break
     # Convert hexadecimal to binary by converting to int
-    bin = "{0:08b}".format(int(hex, 16))
-    return bin  # Return the final binary string for h2m() to take
+    binary = bin(int(hex, 16))[2:].zfill(32)  # 16 for hex base-16 system, 32 bits for output, zfill is zerofill to make it 32 chars total
+    return binary  # Return the final binary string for h2m() to take
 
 
 # Check instruction type
 def h2m(bin):   # returns instruction
     if bin[0:6] == "000000":  # R-Formats always start with an op-code of "000000"
         rs, rt, rd, shamt, funct = bin[6:11], bin[11:16], bin[16:21], bin[21:26], bin[26:32]
-    if funct == "001101":  # Break case
-        print("This is a non-format system instruction")
-    if shamt == "00000":  # Normal case
-        print("This is an R-Format MIPS Instruction")
-    else:  # For sll and srl
-        print("This is an R-Format MIPS Instruction")
-    if rt and rd and shamt == "00000" and funct == "001000":  # Create special case for jr instruction b/c it has special instructions
-        print("This is an R-Format MIPS Instruction")
-    if rs and rt and rd and shamt == "00000" and funct == "001100":  # Create special case for syscall
-        print("This is non-format system instruction")
+        if funct == "001101":  # Break case
+            print("This is a non-format system instruction")
+        if shamt == "00000":  # Normal case
+            print("This is an R-Format MIPS Instruction")
+            instruction = str(functcode_dict[funct])+" "+str(register_dict[rd])+", "+str(register_dict[rs])+", "+str(register_dict[rt])
+            return instruction
+        else:  # For sll and srl
+            print("This is an R-Format MIPS Instruction")
+            #return instruction
+        if rt and rd and shamt == "00000" and funct == "001000":  # Create special case for jr instruction b/c it has special instructions
+            print("This is an R-Format MIPS Instruction")
+            #return instruction
+        if rs and rt and rd and shamt == "00000" and funct == "001100":  # Create special case for syscall
+            print("This is non-format system instruction")
+            #return instruction
     elif bin[0:6] == "000010" or "000011":  # J-Formats are always these two opcodes
-        op, rs, rt, immediate =
+        #op, rs, rt, immediate =
         print("This is a J-Format MIPS Instruction")
+        #return instruction
     else:  # I-Formats are everything else
-        op, address =
+        #op, address =
         print("This is an I-Format MIPS Instruction")
-
-    ####### return instruction #######
-
+        #return instruction
 
 # Driver
-print("hex2mips by @KyleTimmermans\n")
-repeat = 'y'  # Go into loop off start
-while repeat == 'Y' or 'y':
-    bin = sanitize()
-    instruction = h2m(bin)
+print("\nhex2mips by @KyleTimmermans\n")
+repeat = 'Y'
+while repeat == 'Y' or repeat == 'y':   # Needs second repeat == statement or boolean logic messes up ('n' won't cause an escape)
+    binary = sanitize()                 # Otherwise "if 'y'" just checks if 'n' is a string, which it is
+    instruction = h2m(binary)
     print(instruction+"\n")
-    repeat = input("Convert more hex values? (Y/n): \n")
+    repeat = input("Convert more hex values? (Y/n): ")
