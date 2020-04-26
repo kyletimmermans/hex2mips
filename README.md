@@ -1,1 +1,1 @@
-# hex2mips
+# <div align="center">hex2mips</div>
