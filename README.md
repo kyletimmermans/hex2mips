@@ -6,15 +6,9 @@ add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, mult, multu, div, divu,
 <div>&ensp;</div>
 
 <div>Recognizes the current registers:</div>
-$zero,
-$at,
-$v0-$v1,
-$a0-$a3,
-$t0-$t7,
-$s0-$s7,
-$t8-$t9,
-$k0-$k1,
-$gp,
-$sp,
-$fp,
-$ra
+$zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp, $ra
+
+### Sample Output
+<p align="center">
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/output_screenshot.png?raw=true" alt="Sample Output"/>
+</p>
