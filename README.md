@@ -1,3 +1,7 @@
+![Version 1.0](https://img.shields.io/badge/version-v2.0-orange.svg)
+![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)
+[![kyletimmermans Twitter](http://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/kyletimmermans)
+
 # <div align="center">hex2mips</div>
 
 <div>Can currently deal with the following instructions:</div>
