@@ -62,7 +62,7 @@ def h2m(bin):   # returns instruction
             print("This is an R-Format MIPS Instruction")
             instruction = str(functcode_dict[funct])+" "+str(register_dict[rd])+", "+str(register_dict[rt])+", "+str(int(shamt, 2))
             return instruction                                          # int(binary,2) to make decimal, 2nd parameter is the base we are converting from
-    elif bin[0:6] == ("000010" or "000011"):  # J-Formats are always these two opcodes, needs to wrap boolean statement with parenthesis to work properly
+    elif bin[0:6] == "000010" or bin[0:6] == "000011":  # J-Formats are always these two opcodes, needs to wrap boolean statement with parenthesis to work properly
         op, address = bin[0:6], bin[6:31]
         print("This is a J-Format MIPS Instruction")
         instruction = str(opcode_dict[op])+" "+str(hex(int(address, 2)))  # 'bin' here refers to the binary string array e.g. bin[1:2], not bin() function
