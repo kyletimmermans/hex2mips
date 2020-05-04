@@ -8,12 +8,12 @@
 
 <div>&ensp;</div>
 
-<div style="text-decoration:underline"><b>Can currently deal with the following instructions:</b></div>
+<div><ins><b>Can currently deal with the following instructions:</b></ins></div>
 add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, mult, multu, div, divu, xor, jr, syscall, break, beq, bne, addi, addiu, andi, ori, slti, sltiu, lui, lw, sw, xori, lb, lbu, j, jal
 
 <div>&ensp;</div>
 
-<div style="text-decoration:underline"><b>Recognizes the current registers:</b></div>
+<div><b>Recognizes the current registers:</b></div>
 $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp, $ra
 
 ### Sample Output:
