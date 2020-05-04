@@ -13,7 +13,7 @@ add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, mult, multu, div, divu,
 
 <div>&ensp;</div>
 
-<div><b>Recognizes the current registers:</b></div>
+<div><ins><b>Recognizes the current registers:</b></ins></div>
 $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp, $ra
 
 ### Sample Output:
