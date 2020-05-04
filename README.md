@@ -4,8 +4,6 @@
 
 # <div align="center">hex2mips</div>
 
-<div>&ensp;</div>
-
 *Coming in version 2.0 - MIPS Instruction to Hex*
 
 <div>&ensp;</div>
