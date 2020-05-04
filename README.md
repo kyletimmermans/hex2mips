@@ -10,5 +10,5 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 
 ### Sample Output:
 <p align="center">
-  <img src="?raw=true" alt="Sample Output"/>
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/example_screenshot.png?raw=true" alt="Sample Output"/>
 </p>
