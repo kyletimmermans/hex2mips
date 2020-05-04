@@ -8,7 +8,7 @@
 
 <div>&ensp;</div>
 
-<div text-decoration=underline><b>Can currently deal with the following instructions:</b></div>
+<div style="text-decoration:underline"><b>Can currently deal with the following instructions:</b></div>
 add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, mult, multu, div, divu, xor, jr, syscall, break, beq, bne, addi, addiu, andi, ori, slti, sltiu, lui, lw, sw, xori, lb, lbu, j, jal
 
 <div>&ensp;</div>
