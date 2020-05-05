@@ -1,7 +1,7 @@
 from string import ascii_letters as letters  # a-zA-Z
 
 # For R-Types
-functcode_dict = {"100000":"add", "100001":"addu", "100010":"sub", "100011":"subu", "100100":"and", "100100":"or", "100111":"nor",
+functcode_dict = {"100000":"add", "100001":"addu", "100010":"sub", "100011":"subu", "100100":"and", "100101":"or", "100111":"nor",
                   "101010":"slt", "101011":"sltu", "000000":"sll", "000010":"srl", "011000":"mult", "011001":"multu", "011010":"div",
                   "011011":"divu", "100110":"xor", "001000":"jr", "001100":"syscall", "001101":"break"}
 
@@ -89,8 +89,11 @@ def h2m(bin):   # returns instruction
 # Driver
 print("\nhex2mips by @KyleTimmermans")
 repeat = 'Y'
-while repeat == 'Y' or repeat == 'y':   # Needs second repeat == statement or boolean logic messes up ('n' won't cause an escape)
+while repeat == 'Y' or repeat == 'y':
     binary = sanitize()
     instruction = h2m(binary)
     print(instruction+"\n")
     repeat = input("Convert more hex values? (Y/n): ")
+
+
+
