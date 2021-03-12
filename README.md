@@ -6,7 +6,7 @@
 # <div align="center">hex2mips</div>
 
 *Coming in version 2.0 - MIPS Instruction to Hex, Bug Fixes*
-*-Just check for non "0x" and take each part, use dictionary to send to binary, and then to hex*
+*-Just check for non "0x" and take each part, use dictionary to send to binary, concat to large binary string, and then to hex*
 
 <div>&ensp;</div>
 
