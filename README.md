@@ -1,6 +1,6 @@
 ![Version 1.0](https://img.shields.io/badge/version-v1.0-orange.svg)
 ![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)
-![Latest Release Date](https://img.shields.io/github/release-date/kyletimmermans/dijkstras-canvas?color=darkgreen)
+![Latest commit](https://img.shields.io/github/last-commit/kyletimmermans/hex2mips?color=darkgreen)
 [![kyletimmermans Twitter](http://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/kyletimmermans)
 
 # <div align="center">hex2mips</div>
