@@ -7,7 +7,7 @@
 
 *Coming in version 2.0 - MIPS Instruction to Hex, Read command line arguments (instruction or hex), Bug Fixes*
 <div>-Just check for non "0x" and take each part, use dictionary to send to binary, concat to large binary string, and then to hex</div>
-<div>If command line args, no "Yes/No" prompt, just show the conversion only, as instruction or hex code</div>
+<div>-If command line args, no "Yes/No" prompt, just show the conversion only, as instruction or hex code</div>
 <div>-Add '-h' to show options, either command line args or normal mode</div>
 
 <div>&ensp;</div>
