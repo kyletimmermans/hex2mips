@@ -5,8 +5,7 @@
 
 # <div align="center">hex2mips</div>
 
-*Coming in version 2.0 - MIPS Instruction to Hex, Read command line arguments (instruction or hex), Bug Fixes*
-<div>-Just check for non "0x" and take each part, use dictionary to send to binary, concat to large binary string, and then to hex</div>
+*Coming in version 2.0*
 <div>-If command line args, no "Yes/No" prompt, just show the conversion only, as instruction or hex code</div>
 <div>-Add '-h' to show options, either command line args or normal mode</div>
 
@@ -24,3 +23,15 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 <p align="center">
   <img src="https://github.com/kyletimmermans/hex2mips/blob/master/example_screenshot.png?raw=true" alt="Sample Output"/>
 </p>
+
+</br>
+
+### Changelog
+<div>v1.0: Initial-Relase</div>
+<div>v2.0:</div>
+<div>&ensp;&ensp;-Can now convert from MIPS instruction to hex</div>
+<div>&ensp;&ensp;-Send hex or MIPS instruction through command line instead of getting text GUI</div>
+<div>&ensp;&ensp;&ensp;&ensp;-See hex2mips.py -h</div>
+<div>&ensp;&ensp;-Better error handeling / messages and input sanitization</div>
+<div>&ensp;&ensp;-General bug fixes</div>
+<div>&ensp;&ensp;-More comments and diagram in header</div>
