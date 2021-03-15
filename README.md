@@ -12,6 +12,8 @@
 <div>&ensp;&ensp;-Update hex2mips.py and remove hex2mipsV2.py</div>
 <div>&ensp;&ensp;-New output picture</div>
 <div>&ensp;&ensp;-Instructions on how to use (-h)</div>
+<div>&ensp;&ensp;-Update local files (in 'cs' git clone)</div>
+<div>&ensp;&ensp;-Update website picture</div>
 
 <div>&ensp;</div>
 
