@@ -31,7 +31,7 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 <div>v2.0:</div>
 <div>&ensp;&ensp;-Can now convert from MIPS instruction to hex</div>
 <div>&ensp;&ensp;-Send hex or MIPS instruction through command line instead of getting text GUI</div>
-<div>&ensp;&ensp;&ensp;&ensp;-See hex2mips.py -h</div>
+<div>&ensp;&ensp;&ensp;&ensp;-See <div style="font-style: italic">hex2mips.py -h</div></div>
 <div>&ensp;&ensp;-Better error handeling / messages and input sanitization</div>
 <div>&ensp;&ensp;-General bug fixes</div>
 <div>&ensp;&ensp;-More comments and diagram in header</div>
