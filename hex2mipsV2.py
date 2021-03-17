@@ -15,6 +15,10 @@ the binary strings into one final piece so we can get either type"
       \      |      /                   \     |     /
       add   $t12  $a14                   0x12345678
 
+Fixes:
+-Fix rHex and jHex not working on second try
+-add leading 0 to j format, maybe 2 0s sometimes
+-hex2binary for j and jal and then padding
 '''
 
 from string import ascii_letters as letters  # a-zA-Z
@@ -48,7 +52,7 @@ def inputSanitize():
     global letters, symbols
     check = ["neither", "content"]   # Init check, check[0] is typ, check[1] is the binary
     while True:
-        print(" ")  # Prettify output
+        print(" ")  # Space between intro text and other input prompts
         check[1] = input("Enter Hex Code or MIPS Instruction: ")
         if check[1] == 'n' or check[1] == 'N':  # Allow for exit on retry
             exit()
@@ -169,41 +173,41 @@ def h2m(bin):   # returns instruction
 
 
 
-# Used with m2h
+# Used with m2h, looks for register names, otherwise sanitizes integers and hex code parameters for op command
 def getRegisters(registersList):
     reg1, reg2, reg3 = "err", "err", "err"  # If these never get changed, register was not found
     for i in range(len(registersList)):
-        for key, value in register_dict.items():
-            if i == 0 and registersList[i] == value:
+        for key, value in register_dict.items():    # If it's a register in functcode_dict or opcode_dict
+            if i == 0 and registersList[i] == value:    # Otherwise it is an integer or hex code which needs zfill(16)
                 reg1 = key
             elif i == 1 and registersList[i] == value:
                 reg2 = key
-            elif i == 2 and registersList[i] == value:
+            elif i == 2 and registersList[i] == value:   # May not be evaluated if only two registers
                 reg3 = key
         if i == 0 and registersList[i].isdigit():  # Register can also just be an int for I format instructions
-            reg1 = bin(registersList[i])[2:]  # Then convert to binary
+            reg1 = bin(int(registersList[i], 10))[2:].zfill(16)  # Then convert to binary with zfill and re-integer it
         elif i == 1 and registersList[i].isdigit():
-            reg2 = bin(registersList[i])[2:]
+            reg2 = bin(int(registersList[i], 10))[2:].zfill(16)
         elif i == 2 and registersList[i].isdigit():
-            reg3 = bin(registersList[i])[2:]
-        if i == 0 and 'x' in registersList[i]:  # Register can also just be hex for I format instructions
-            reg1 = bin(int(registersList[i], 16))[2:]
+            reg3 = bin(int(registersList[i], 10))[2:].zfill(16)
+        if i == 0 and 'x' in registersList[i]:  # Register can also just be hex for I format instructions (return as binary string)
+            reg1 = bin(int(registersList[i], 16))[2:].zfill(16)
         elif i == 1 and 'x' in registersList[i]:
-            reg2 = bin(int(registersList[i], 16))[2:]
+            reg2 = bin(int(registersList[i], 16))[2:].zfill(16)
         elif i == 2 and 'x' in registersList[i]:
-            reg3 = bin(int(registersList[i], 16))[2:]
-    if (len(registersList)) == 3:   # Some codes have 3
-        if reg1 == "err" or reg2 == "err" or reg3 == "err":
-            print("Invalid register(s), Try Again")
+            reg3 = bin(int(registersList[i], 16))[2:].zfill(16)
+    if (len(registersList)) == 3:   # Some codes have 3 registers
+        if reg1 == "err" or reg2 == "err" or reg3 == "err":  # If len == 3 and there are errors
+            print("Invalid register(s), make sure any labels are in hexadecimal, Try Again")  # Possibile they used a label not in hex
             return 1
-    else:
-        return reg1, reg2, reg3
-    if (len(registersList)) == 2:  # Some codes have 2
-        if reg1 == "err" or reg2 == "err":
-            print("Invalid register(s), Try Again")
+        else:  # If len == 3 and no errors
+            return reg1, reg2, reg3
+    if (len(registersList)) == 2:  # Some codes have only 2 registers
+        if reg1 == "err" or reg2 == "err":  # If len == 2 and there are errors
+            print("Invalid register(s), make sure any labels are in hexadecimal, Try Again")
             return 1
-    else:
-        return reg1, reg2
+        else:   # If len == 2 and no errors
+            return reg1, reg2
 
 
 
@@ -211,8 +215,9 @@ def getRegisters(registersList):
 def m2h(instruction):
     shamt = "00000"  # Need to be added in for R format instructions, always the same
     funct = "100000"
+    special = "000000"
     newInstruction = instruction.replace(" ", "")  # Remove spaces
-    if ',' in newInstruction: # Split string up by comma if R format or I format
+    if ',' in newInstruction or "syscall" in newInstruction or "break" in newInstruction: # Split string up by comma if R format or I format and syscall/break
         splitString = newInstruction.replace(")", "")  # Get rid of trailing )
         splitString = re.split('[\,\(]', splitString)  # Split everything by comma and parenthesis, put in a list
         splitString[0] = re.split('([\$])', splitString[0])  # Split first item e.g. add$t5 becomes ['add', '$', 't5']
@@ -227,10 +232,10 @@ def m2h(instruction):
         # Check first list item, the instruction, if its in
         for key, value in functcode_dict.items():  # Check if it's in functcode dictionary first
             if splitString[0] == value:   # If funct code matches one of the values, then append binary
-                op = key, op_value = value
+                op, op_value = key, value  # Save values if found
         for key, value in opcode_dict.items():  # Check opcodes next if we didn't find the command in functcodes_dict
             if splitString[0] == value:  # If funct code matches one of the values, then append binary
-                op = key, op_value = value
+                op, op_value = key, value
         try:
             op
         except NameError:
@@ -243,18 +248,20 @@ def m2h(instruction):
             return 1
         else:     # finalHex is the binary string to be converted to hex
             if op_value == "syscall":   # R and I formats that don't follow the normal format
-                finalHex = op + shamt + funct
+                finalHex = special + str(bin(int(registerList[1]))[2:].zfill(20)) + op  # Fix middle arg by using zfill 20
             elif op_value == "break":
-                finalHex = op + splitString[1] + shamt + funct   # Break + breakpoint which is only other field
+                finalHex = special + str(bin(int(registerList[1]))[2:].zfill(20)) + op
             elif op_value == "lw" or op_value == "sw" or op_value == "lb" or op_value == "lbu":
-                finalHex = op
+                finalHex = op + registerList[2] + registerList[0] + registerList[1]
             elif op_value == "lui":
                 finalHex = op
             elif op_value in normalRFormat:  # Normal R instruction
-                finalHex = op + registerList[0] + registerList[1] + registerList[2] + shamt + funct
+                finalHex = special + registerList[1] + registerList[2] + registerList[0] + shamt + op  # rs, rt, rd: in that order
+                rHex = hex(int(finalHex, 2))
+                return rHex[0:2] + '0' + rHex[2:] # R Format needs extra 0 in the front
             elif op_value in normalIFormat:  # Normal I instruction
-                finalHex = op + registerList[0] + registerList[2] + registerList[1]
-    else:  # If not R or I instruction, then treat differently bc it's J format, except for jr
+                finalHex = op + registerList[1] + registerList[0] + registerList[2]
+    else:  # If not R or I instruction, then treat differently bc it's J format, except for jr (All hardcoded)
         # Check op code
         if newInstruction[0] == 'j' and newInstruction[1] != 'r' and newInstruction[1] != 'a':  # Check if it's only j, not jr or jal
             op_value = "j"
@@ -265,33 +272,43 @@ def m2h(instruction):
         else:
             print("Invalid or unrecognized op code, Try Again")  # None of the j codes recognized either, try again
             return 1
-        if len(newInstruction) > 4 or len(newInstruction) < 2:  # If too many or too few arguments
+        if '0x' in newInstruction:  # Split at 0x or $
+            sizeCheck = re.split('0x|[^0-9a-zA-Z ]+', newInstruction)
+        elif '$' in newInstruction:
+            sizeCheck = re.split('[\$]', newInstruction)
+        if len(sizeCheck) != 2:  # If too many or too few arguments
             print("Too many/few arguments for MIPS instruction, Try Again")
             return 1
         # Only three op codes, dont need to search through functcode_dict or opcode_dict
         if op_value == "jr":
-            try:
-                finalHex = list(functcode_dict.keys())[list(functcode_dict.values()).index(op_value)] + list(register_dict.keys())[list(register_dict.values()).index(instruction[2:])]    # One liner for dict value -> key from G4G
+            try:    # Special + register + 15 0s + special
+                finalHex = "00000" + list(register_dict.keys())[list(register_dict.values()).index("$" + sizeCheck[1])] + 15*'0' + "001000"  # One liner for dict value -> key from G4G
+                jHex = hex(int(finalHex, 2))
+                return jHex[0:2] + "0" + jHex[2:]
             except KeyError:
                 print("Invalid register(s), Try Again")
                 return 1
         elif op_value == "j":  # Normal cases
             try:
-                finalHex = list(functcode_dict.keys())[list(opcode_dict.values()).index(op_value)] + list(register_dict.keys())[list(register_dict.values()).index(instruction[1:])]  # String splice is just the one register used
+                finalHex = list(functcode_dict.keys())[list(opcode_dict.values()).index(op_value)] #+ hex2binary  # String splice is just the one register used
             except KeyError:
                 print("Invalid register(s), Try Again")
                 return 1
         elif op_value == "jal":
             try:
-                finalHex = list(functcode_dict.keys())[list(opcode_dict.values()).index(op_value)] + list(register_dict.keys())[list(register_dict.values()).index(instruction[3:])]
+                finalHex = list(functcode_dict.keys())[list(opcode_dict.values()).index(op_value)] #+ hex2binary
             except:
                 print("Invalid register(s), Try Again")
                 return 1
-    return hex(bin(int(finalHex, 2)).zfill(32))    # Return as Binary String -> Binary Literal -> Hex
+    # int should be '2' base because its binary, don't need zfill, already perfect length,
+    return hex(int(finalHex, 2))    # Return as Binary String -> Binary Literal -> Hex (.format(hex, 10 digit precison)
+
+
 
 # Driver
 print("\nhex2mips by @KyleTimmermans")
-print("Notice: Labels must be entered as hexadecimal")
+print("Notice: -Labels must be entered as hexadecimal")
+print("        -Registers must have $ and be separated by commas")
 repeat = 'Y'
 while repeat == 'Y' or repeat == 'y':
    firstInput = inputSanitize()
