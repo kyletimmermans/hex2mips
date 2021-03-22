@@ -256,6 +256,14 @@ def m2h(instruction):
                 finalHex = op + registerList[2] + registerList[0] + registerList[1]
             elif op_value == "lui":
                 finalHex = op + 5*'0' + registerList[0] + registerList[1]
+            elif op_value == "srl" or op_value == "sll":
+                finalHex = special + 5*'0' + registerList[1] + registerList[0] + registerList[2][11:16] + op
+                finalHex = hex(int(finalHex, 2))
+                print(len(finalHex))
+                if len(finalHex) == 7:
+                    return finalHex[0:2] + "000" + finalHex[2:].upper()  # If 5 chars, add 3 0's
+                elif len(finalHex) == 8:
+                    return finalHex[0:2] + "00" + finalHex[2:].upper()  # If 6 chars, add 2 0's
             elif op_value in normalRFormat:  # Normal R instruction
                 finalHex = special + registerList[1] + registerList[2] + registerList[0] + shamt + op  # rs, rt, rd: in that order
                 finalHex = hex(int(finalHex, 2))
