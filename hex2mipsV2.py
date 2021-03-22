@@ -2,7 +2,7 @@
 Kyle Timmermans
 hex2mips
 python 3.9.2
-March 14, 2021
+March 21, 2021
 
 "Entirety of program revolves around converting hex or MIPS instruction
 to binary (op, rs, rt, rd, shamt, funct) and then how to order
@@ -16,9 +16,9 @@ the binary strings into one final piece so we can get either type"
       add   $t12  $a14                   0x12345678
 
 Fixes:
--Fix rHex and jHex not working on second try
 -add leading 0 to j format, maybe 2 0s sometimes
 -hex2binary for j and jal and then padding
+-make finalHex for lui, and everyone else
 '''
 
 from string import ascii_letters as letters  # a-zA-Z
@@ -257,8 +257,8 @@ def m2h(instruction):
                 finalHex = op
             elif op_value in normalRFormat:  # Normal R instruction
                 finalHex = special + registerList[1] + registerList[2] + registerList[0] + shamt + op  # rs, rt, rd: in that order
-                rHex = hex(int(finalHex, 2))
-                return rHex[0:2] + '0' + rHex[2:] # R Format needs extra 0 in the front
+                finalHex = hex(int(finalHex, 2))
+                return finalHex[0:2] + "0" + finalHex[2:]  # R Format needs extra 0 in the front
             elif op_value in normalIFormat:  # Normal I instruction
                 finalHex = op + registerList[1] + registerList[0] + registerList[2]
     else:  # If not R or I instruction, then treat differently bc it's J format, except for jr (All hardcoded)
@@ -273,7 +273,7 @@ def m2h(instruction):
             print("Invalid or unrecognized op code, Try Again")  # None of the j codes recognized either, try again
             return 1
         if '0x' in newInstruction:  # Split at 0x or $
-            sizeCheck = re.split('0x|[^0-9a-zA-Z ]+', newInstruction)
+            sizeCheck = re.split('0x|[^0-9a-zA-Z]+', newInstruction)
         elif '$' in newInstruction:
             sizeCheck = re.split('[\$]', newInstruction)
         if len(sizeCheck) != 2:  # If too many or too few arguments
@@ -283,8 +283,8 @@ def m2h(instruction):
         if op_value == "jr":
             try:    # Special + register + 15 0s + special
                 finalHex = "00000" + list(register_dict.keys())[list(register_dict.values()).index("$" + sizeCheck[1])] + 15*'0' + "001000"  # One liner for dict value -> key from G4G
-                jHex = hex(int(finalHex, 2))
-                return jHex[0:2] + "0" + jHex[2:]
+                finalHex = hex(int(finalHex, 2))
+                return finalHex[0:2] + "0" + finalHex[2:]
             except KeyError:
                 print("Invalid register(s), Try Again")
                 return 1
@@ -321,9 +321,9 @@ while repeat == 'Y' or repeat == 'y':
             print(instruction+"\n")
    elif firstInput[0] == "mips":
         instruction = firstInput[1]
-        hex = m2h(instruction)
-        if hex == 1:  # If m2h() returned 1, it was an error
+        hexOutput = m2h(instruction)   # hex() is built in, do not name variables "hex"
+        if hexOutput == 1:  # If m2h() returned 1, it was an error
             continue
         else:    # Otherwise it's normal hex and we can print
-            print(hex+"\n")
+            print(hexOutput+"\n")
    repeat = input("Convert another hex or instruction value? (Y/n): ")
