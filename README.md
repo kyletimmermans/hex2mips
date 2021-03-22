@@ -41,5 +41,6 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 <div>&ensp;&ensp;-Send hex or MIPS instruction through command line instead of getting text GUI</div>
 <div>&ensp;&ensp;&ensp;&ensp;-See <em>hex2mips.py -h</em></div>
 <div>&ensp;&ensp;-Better error handeling / messages and input sanitization</div>
+<div>&ensp;&ensp;-Hex letters outputted in uppercase letters</div>
 <div>&ensp;&ensp;-General bug fixes</div>
 <div>&ensp;&ensp;-More comments and diagram in header</div>
