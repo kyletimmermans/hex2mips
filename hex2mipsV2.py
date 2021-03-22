@@ -16,13 +16,11 @@ the binary strings into one final piece so we can get either type"
       add   $t12  $a14                   0x12345678
 
 Fixes:
--hex2binary for j and jal and then padding
--make finalHex for lui, and everyone else
 -make -h and command line input
 '''
 
 from string import ascii_letters as letters  # a-zA-Z
-from string import printable as symbols
+from string import printable as symbols  # !@#%^&*(){}[] etc
 import re
 
 # For R-Types
@@ -217,16 +215,23 @@ def m2h(instruction):
     funct = "100000"
     special = "000000"
     newInstruction = instruction.replace(" ", "")  # Remove spaces
-    if ',' in newInstruction or "syscall" in newInstruction or "break" in newInstruction: # Split string up by comma if R format or I format and syscall/break
+    if ',' in newInstruction or "syscall" in newInstruction or "break" in newInstruction:  # Split string up by comma if R format or I format and syscall/break
         splitString = newInstruction.replace(")", "")  # Get rid of trailing )
         splitString = re.split('[\,\(]', splitString)  # Split everything by comma and parenthesis, put in a list
         splitString[0] = re.split('([\$])', splitString[0])  # Split first item e.g. add$t5 becomes ['add', '$', 't5']
+        if splitString[0][0] == "syscall":  # List of lists
+            return "0x0000000C"
+        elif splitString[0][0] == "break":
+            return "0x0000000D"
         splitString[0][1:3] = [''.join(splitString[0][1:3])] # Join $ and t5 in the substring, so now we have [['add', '$t5'], '$t4', '$t3']
         temp = [item for sublists in splitString for item in sublists if isinstance(sublists, list)]  # Flatten first list
         temp2 = splitString  # Hold onto old values while we reassign splitString
         splitString = temp   # Assign the flattened values of index 1, e.g. 'add' and '$t5'
-        splitString.extend([temp2[1], temp2[2]])  # Put it all together e.g. ['add', '$t5'] + ['$t4'] + ['$t3'] = ['add', '$t5', '$t4', 't3']
-        if len(splitString) > 4 or len(splitString) < 2:  # If too many or two few arguments
+        if len(temp2) == 3:
+            splitString.extend([temp2[1], temp2[2]])  # Put it all together e.g. ['add', '$t5'] + ['$t4'] + ['$t3'] = ['add', '$t5', '$t4', 't3']
+        elif len(temp2) == 2:
+            splitString.append(temp2[1])  # Append instead of extend if only adding an extra
+        if (len(splitString) > 4 or len(splitString) < 2):  # If too many or two few arguments
             print("Too many/few arguments for MIPS instruction, Try Again")
             return 1
         # Check first list item, the instruction, if its in
@@ -247,18 +252,14 @@ def m2h(instruction):
         if registerList == 1:  # Invalid register somewhere
             return 1
         else:     # finalHex is the binary string to be converted to hex
-            if op_value == "syscall":   # R and I formats that don't follow the normal format
-                finalHex = special + str(bin(int(registerList[1]))[2:].zfill(20)) + op  # Fix middle arg by using zfill 20
-            elif op_value == "break":
-                finalHex = special + str(bin(int(registerList[1]))[2:].zfill(20)) + op
-            elif op_value == "lw" or op_value == "sw" or op_value == "lb" or op_value == "lbu":
+            if op_value == "lw" or op_value == "sw" or op_value == "lb" or op_value == "lbu":
                 finalHex = op + registerList[2] + registerList[0] + registerList[1]
             elif op_value == "lui":
-                finalHex = op
+                finalHex = op + 5*'0' + registerList[0] + registerList[1]
             elif op_value in normalRFormat:  # Normal R instruction
                 finalHex = special + registerList[1] + registerList[2] + registerList[0] + shamt + op  # rs, rt, rd: in that order
                 finalHex = hex(int(finalHex, 2))
-                return finalHex[0:2] + "0" + finalHex[2:]  # R Format needs extra 0 in the front
+                return finalHex[0:2] + "0" + finalHex[2:].upper()  # R Format needs extra 0 in the front
             elif op_value in normalIFormat:  # Normal I instruction
                 finalHex = op + registerList[1] + registerList[0] + registerList[2]
     else:  # If not R or I instruction, then treat differently bc it's J format, except for jr (All hardcoded)
@@ -285,26 +286,31 @@ def m2h(instruction):
                 finalHex = "00000" + list(register_dict.keys())[list(register_dict.values()).index("$" + sizeCheck[1])] + 15*'0' + "001000"  # One liner for dict value -> key from G4G
                 finalHex = hex(int(finalHex, 2))
                 if len(finalHex) <= 8:
-                    return finalHex[0:2] + "00" + finalHex[2:]  # If 6 chars, add 2 0's
+                    return finalHex[0:2] + "00" + finalHex[2:].upper()  # If 6 chars, add 2 0's
                 elif len(finalHex) > 8:
-                    return finalHex[0:2] + "0" + finalHex[2:]   # If 7 chars, add 1 0
+                    return finalHex[0:2] + "0" + finalHex[2:].upper()   # If 7 chars, add 1 0
             except KeyError:
                 print("Invalid register(s), Try Again")
                 return 1
-        elif op_value == "j":  # Normal cases
-            try:
-                finalHex = list(functcode_dict.keys())[list(opcode_dict.values()).index(op_value)] #+ hex2binary  # String splice is just the one register used
-            except KeyError:
-                print("Invalid register(s), Try Again")
+        elif op_value == "j":  # Normal cases, take hex labelss, not registers
+            if '0x' in newInstruction:
+                finalHex = "000010" + bin(int("0x" + sizeCheck[1], 16))[2:].zfill(26)  # j opcode + target with 26 zfill
+                finalHex = hex(int(finalHex, 2))
+                return finalHex[0:2] + "0" + finalHex[2:].upper()
+            else:
+                print("Invalid hex label, Try Again")
                 return 1
         elif op_value == "jal":
-            try:
-                finalHex = list(functcode_dict.keys())[list(opcode_dict.values()).index(op_value)] #+ hex2binary
-            except:
-                print("Invalid register(s), Try Again")
+            if '0x' in newInstruction:
+                finalHex = "000011" + bin(int("0x" + sizeCheck[1], 16))[2:].zfill(26)  # jal opcode + target with 26 zfill
+                finalHex = hex(int(finalHex, 2))
+                return finalHex[0:2] + "0" + finalHex[2:].upper()
+            else:
+                print("Invalid hex label, Try Again")
                 return 1
-    # int should be '2' base because its binary, don't need zfill, already perfect length,
-    return hex(int(finalHex, 2))    # Return as Binary String -> Binary Literal -> Hex (.format(hex, 10 digit precison)
+    # int should be '2' base because its binary, don't need zfill, already perfect length
+    finalHex = hex(int(finalHex, 2))  # Return as Binary String -> Binary Literal -> Hex
+    return finalHex[0:2] + finalHex[2:].upper()  # Return with capital letters besides the x in '0x'
 
 
 
