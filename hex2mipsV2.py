@@ -2,7 +2,7 @@
 Kyle Timmermans
 hex2mips
 python 3.9.2
-March 21, 2021
+March 22, 2021
 
 "Entirety of program revolves around converting hex or MIPS instruction
 to binary (op, rs, rt, rd, shamt, funct) and then how to order
@@ -16,9 +16,9 @@ the binary strings into one final piece so we can get either type"
       add   $t12  $a14                   0x12345678
 
 Fixes:
--add leading 0 to j format, maybe 2 0s sometimes
 -hex2binary for j and jal and then padding
 -make finalHex for lui, and everyone else
+-make -h and command line input
 '''
 
 from string import ascii_letters as letters  # a-zA-Z
@@ -284,7 +284,10 @@ def m2h(instruction):
             try:    # Special + register + 15 0s + special
                 finalHex = "00000" + list(register_dict.keys())[list(register_dict.values()).index("$" + sizeCheck[1])] + 15*'0' + "001000"  # One liner for dict value -> key from G4G
                 finalHex = hex(int(finalHex, 2))
-                return finalHex[0:2] + "0" + finalHex[2:]
+                if len(finalHex) <= 8:
+                    return finalHex[0:2] + "00" + finalHex[2:]  # If 6 chars, add 2 0's
+                elif len(finalHex) > 8:
+                    return finalHex[0:2] + "0" + finalHex[2:]   # If 7 chars, add 1 0
             except KeyError:
                 print("Invalid register(s), Try Again")
                 return 1
