@@ -15,7 +15,7 @@
 <div>&ensp;&ensp;&ensp;&ensp;https://www.tutorialspoint.com/python/python_command_line_arguments.htm</div>
 <div>&ensp;&ensp;-Update local files (in 'cs' git clone)</div>
 <div>&ensp;&ensp;-Update website picture</div>
-<div>&ensp;&ensp;-Backups to mege.nz</div>
+<div>&ensp;&ensp;-Backups to mega.nz</div>
 
 <div>&ensp;</div>
 
