@@ -366,7 +366,7 @@ elif len(sys.argv) > 1 and "-h" not in sys.argv:  # If hex or mips given
             if hexOutput == 1:  # If m2h() returned 1, it was an error
                 continue
             else:    # Otherwise it's normal hex and we can print
-                print("\n"+hexOutput+"\n")
+                print(hexOutput+"\n")
                 quit()  # On correct, end, no more retries
 elif "-h" in sys.argv:  # If usage/help requested
     print("\nUsage 1: \"hex2mips.py\" (w/o arguments) for a \"Y/n\" GUI Mode")
