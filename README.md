@@ -5,11 +5,7 @@
 
 # <div align="center">hex2mips</div>
 
-*Coming in version 2.0*
-<div>-If command line args, no "Yes/No" prompt, just show the conversion only, as instruction or hex code</div>
-<div>-Add '-h' to show options, either command line args or normal mode</div>
 <div>-Fix repo<div>
-<div>&ensp;&ensp;-Update hex2mips.py and remove hex2mipsV2.py</div>
 <div>&ensp;&ensp;-New output picture</div>
 <div>&ensp;&ensp;-Instructions on how to use (-h)</div>
 <div>&ensp;&ensp;&ensp;&ensp;https://www.tutorialspoint.com/python/python_command_line_arguments.htm</div>
