@@ -24,12 +24,12 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 
 ### Command Line: Hex 2 MIPS
 <p align="center">
-  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/media/command_line_h2m_1.png?raw=true" alt="Command Line Hex 2 MIPS"/>
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/media/command_line_h2m_2.png?raw=true" alt="Command Line Hex 2 MIPS"/>
 </p>
 
 ### Command Line: MIPS 2 Hex
 <p align="center">
-  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/media/command_line_m2h_1.png?raw=true" alt="Command Line MIPS 2 Hex"/>
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/media/command_line_m2h_2.png?raw=true" alt="Command Line MIPS 2 Hex"/>
 </p>
 
 ### Usage / Help
