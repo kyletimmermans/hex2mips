@@ -5,13 +5,7 @@
 
 # <div align="center">hex2mips</div>
 
-<div>-Fix repo<div>
-<div>&ensp;&ensp;-New output picture</div>
-<div>&ensp;&ensp;-Instructions on how to use (-h)</div>
-<div>&ensp;&ensp;&ensp;&ensp;https://www.tutorialspoint.com/python/python_command_line_arguments.htm</div>
-<div>&ensp;&ensp;-Update local files (in 'cs' git clone)</div>
-<div>&ensp;&ensp;-Update website picture</div>
-<div>&ensp;&ensp;-Backups to mega.nz</div>
+## <div>Convert hex codes to MIPS instructions and vice versa, see <em>hex2mips.py -h</em> for more information</div>
 
 <div>&ensp;</div>
 
@@ -23,9 +17,24 @@ add, addu, sub, subu, and, or, nor, slt, sltu, sll, srl, mult, multu, div, divu,
 <div><ins><b>Recognizes the current registers:</b></ins></div>
 $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp, $ra
 
-### Sample Output:
+### GUI Mode
 <p align="center">
-  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/example_screenshot.png?raw=true" alt="Sample Output"/>
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/main/media/gui.png?raw=true" alt="GUI Mode"/>
+</p>
+
+### Command Line: Hex 2 MIPS
+<p align="center">
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/main/media/command_line_h2m.png?raw=true" alt="Command Line Hex 2 MIPS"/>
+</p>
+
+### Command Line: MIPS 2 Hex
+<p align="center">
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/main/media/command_line_m2h.png?raw=true" alt="Command Line MIPS 2 Hex"/>
+</p>
+
+### Usage / Help
+<p align="center">
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/main/media/usage_help.png?raw=true" alt="Usage / Help"/>
 </p>
 
 </br>
