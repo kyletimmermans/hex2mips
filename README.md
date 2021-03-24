@@ -34,7 +34,7 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 
 ### Usage / Help
 <p align="center">
-  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/media/usage_help_1.png?raw=true" alt="Usage / Help"/>
+  <img src="https://github.com/kyletimmermans/hex2mips/blob/master/media/usage_help.png?raw=true" alt="Usage / Help"/>
 </p>
 
 </br>
