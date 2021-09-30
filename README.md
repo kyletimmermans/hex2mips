@@ -5,7 +5,7 @@
 
 # <div align="center">hex2mips</div>
 
-CoConvert hexadecimal codes to readable MIPS Instructions and vice versa, see <em>hex2mips.py -h</em> for more information
+Convert hexadecimal codes to readable MIPS Instructions and vice versa, see <em>hex2mips.py -h</em> for more information
 
 <div>&ensp;</div>
 
