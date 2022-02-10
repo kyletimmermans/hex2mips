@@ -1,4 +1,4 @@
-![Version 2.0](https://img.shields.io/badge/version-v2.0-orange.svg)
+![Version 2.1](https://img.shields.io/badge/version-v2.0-orange.svg)
 ![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)
 ![Latest commit](https://img.shields.io/github/last-commit/kyletimmermans/hex2mips?color=darkgreen)
 [![kyletimmermans Twitter](http://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/kyletimmermans)
@@ -49,3 +49,8 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 <div>&ensp;&ensp;-Hex letters outputted in uppercase letters</div>
 <div>&ensp;&ensp;-General bug fixes</div>
 <div>&ensp;&ensp;-More comments and diagram in header</div>
+<div>v2.1</div>
+<div>&ensp;&ensp;-Added if __name__ == "__main__":</div>
+<div>&ensp;&ensp;-Refactor / Moved code into main</div>
+<div>&ensp;&ensp;-Added Python Shebang</div>
+
