@@ -53,4 +53,4 @@ $zero, $at, $v0-$v1, $a0-$a3, $t0-$t7, $s0-$s7, $t8-$t9, $k0-$k1, $gp, $sp, $fp,
 <div>&ensp;&ensp;-Added if __name__ == "__main__":</div>
 <div>&ensp;&ensp;-Refactor / Moved code into main</div>
 <div>&ensp;&ensp;-Added Python Shebang</div>
-
+<div>&ensp;&ensp;-Added --version and -v command line flag<div>
