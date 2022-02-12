@@ -60,7 +60,7 @@ def inputSanitize():
             check[0] = "mips"
             nonInstructionCheck = [item for item in (symbols[62:64] or symbols[66:71] or symbols[71:72] or symbols[74:99]) if(item in check[1])]  # Check for symbols that is not '(' ')' ',' '$'
             if nonInstructionCheck:
-                print("Invalid symbol found in Instruction string, Try Again")
+                print("Invalid symbol found in instruction string, Try Again")
                 continue
             else:
                 return check
