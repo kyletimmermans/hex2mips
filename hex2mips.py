@@ -329,7 +329,7 @@ def main():
                     continue
                 else:    # Otherwise it's normal hex and we can print
                     print("\n"+hexOutput+"\n")
-           repeat = input("Convert another hex or instruction value? (Y/n): ")
+           repeat = input("Convert another hex or MIPS instruction value? (Y/n): ")
     elif len(sys.argv) > 1 and "-h" not in sys.argv:  # If hex or mips given
         while True:  # Keep allowing for retries, and then on correct, end it
            firstInput = inputSanitize()
@@ -356,7 +356,7 @@ def main():
         print("Example 1: \"hex2mips.py\" with no arguments will bring you to the GUI menu")
         print("Example 2: \"hex2mips.py 0x018B6820\" will return \"add $t5, $t4, $t3\"")
         print("Example 3: \"hex2mips.py sw \\$t1, 32\\(\\$s7\\)\" will return \"0xAEE90020\"")
-        print("    -Backslashes needed for the command line mips instruction to hex for any dollar signs or parethesis")
+        print("    -Backslashes needed for the command line MIPS instruction to hex for any dollar signs or parethesis")
         print("    -Backslashes not needed for the GUI version\n")
 
 
