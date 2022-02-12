@@ -7,7 +7,7 @@ Feb 11, 2022
 hex2mips v2.1
 
 "Entirety of program revolves around converting hex or MIPS instruction
-to binary (op, rs, rt, rd, shamt, funct) and then how to order
+to binary (op, rs, rt, rd, shamt, funct) and then specifically ordering
 the binary strings into one final piece so we can get either type"
 
             h2m()                            m2h()
