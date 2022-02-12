@@ -1,46 +1,28 @@
+#!/usr/bin/env python3
+
 '''
 Kyle Timmermans
-hex2mips
-python 3.9.2
-March 23, 2021
+Compiled in Python 3.9.7
+Feb 11, 2022
+hex2mips v2.1
 
 "Entirety of program revolves around converting hex or MIPS instruction
 to binary (op, rs, rt, rd, shamt, funct) and then how to order
 the binary strings into one final piece so we can get either type"
 
-            h2m()                           m2h()
+            h2m()                            m2h()
          0x12345678                      add $t12 $t14
          /    |   \                      /    |    \
       01010 01011 10110               01010 01011 10110
-      \      |      /                   \     |     /
-      add   $t12  $a14                   0x12345678
+       \      |      /                   \    |     /
+       add  $t12  $a14                    0x12345678
 '''
+
 
 from string import ascii_letters as letters  # a-zA-Z
 from string import printable as symbols  # !@#%^&*(){}[] etc
 import re  # regex
 import sys  # Get command line args
-
-# For R-Types
-functcode_dict = {"100000":"add", "100001":"addu", "100010":"sub", "100011":"subu", "100100":"and", "100101":"or", "100111":"nor",
-                  "101010":"slt", "101011":"sltu", "000000":"sll", "000010":"srl", "011000":"mult", "011001":"multu", "011010":"div",
-                  "011011":"divu", "100110":"xor", "001000":"jr", "001100":"syscall", "001101":"break"}
-
-# For I/J-Type
-opcode_dict = {"000100":"beq", "000101":"bne", "001000":"addi", "001001":"addiu", "001100":"andi", "001101":"ori", "001010":"slti",
-               "001011":"sltiu", "001111":"lui", "100011":"lw", "101011":"sw", "001110":"xori", "100000":"lb", "100100":"lbu",
-               "000010":"j", "000011":"jal"}
-
-# For register naming
-register_dict = {"00000":"$zero", "00001":"$at", "00010":"$v0", "00011":"$v1", "00100":"$a0", "00101":"$a1", "00110":"$a2", "00111":"$a3",
-                 "01000":"$t0", "01001":"$t1", "01010":"$t2", "01011":"$t3", "01100":"$t4", "01101":"$t5", "01110":"$t6", "01111":"$t7",
-                 "10000":"$s0", "10001":"$s1", "10010":"$s2", "10011":"$s3", "10100":"$s4", "10101":"$s5", "10110":"$s6", "10111":"$s7",
-                 "11000":"$t8", "11001":"$t9", "11010":"$k0", "11011":"$k1", "11100":"$gp", "11101":"$sp", "11110":"fp", "11111":"$ra"}
-
-
-# For m2h()
-normalRFormat = ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu", "mult", "multu", "div", "divu", "xor"]
-normalIFormat = ["addi", "addiu", "andi", "ori", "slti", "sltiu", "xori"]
 
 
 # Input string, check if hex or mips, sanitize, return binary string
@@ -82,7 +64,6 @@ def inputSanitize():
                 continue
             else:
                 return check
-
 
 
 # Check instruction type and make hex into mips
@@ -174,7 +155,6 @@ def h2m(bin):   # returns instruction
             return instruction
 
 
-
 # Used with m2h, looks for register names, otherwise sanitizes integers and hex code parameters for op command
 def getRegisters(registersList):
     reg1, reg2, reg3 = "err", "err", "err"  # If these never get changed, register was not found
@@ -210,7 +190,6 @@ def getRegisters(registersList):
             return 1
         else:   # If len == 2 and no errors
             return reg1, reg2
-
 
 
 # Mips instruction to hex
@@ -324,56 +303,84 @@ def m2h(instruction):
     return finalHex[0:2] + finalHex[2:].upper()  # Return with capital letters besides the x in '0x'
 
 
+def main():
+    if '--version' in sys.argv or '-v' in sys.argv:
+        print("\nhex2mips v2.1\n")
+        quit()
+        
+    if len(sys.argv) == 1:  # Normal "Y/N" loop when not using
+        print("\nhex2mips by @KyleTimmermans")
+        print("Notice: -Labels must be entered as hexadecimal")
+        print("        -Registers must have $ and be separated by commas")
+        repeat = 'Y'
+        while repeat == 'Y' or repeat == 'y':
+           firstInput = inputSanitize()
+           if firstInput[0] == "hex":
+                binary = firstInput[1]
+                instruction = h2m(binary)
+                if instruction == 1:
+                    continue
+                else:
+                    print("\n"+instruction+"\n")
+           elif firstInput[0] == "mips":
+                instruction = firstInput[1]
+                hexOutput = m2h(instruction)   # hex() is built in, do not name variables "hex"
+                if hexOutput == 1:  # If m2h() returned 1, it was an error
+                    continue
+                else:    # Otherwise it's normal hex and we can print
+                    print("\n"+hexOutput+"\n")
+           repeat = input("Convert another hex or instruction value? (Y/n): ")
+    elif len(sys.argv) > 1 and "-h" not in sys.argv:  # If hex or mips given
+        while True:  # Keep allowing for retries, and then on correct, end it
+           firstInput = inputSanitize()
+           if firstInput[0] == "hex":
+                binary = firstInput[1]
+                instruction = h2m(binary)
+                if instruction == 1:
+                    continue
+                else:
+                    print("\n"+instruction+"\n")
+                    quit()  # On correct, end, no more retries
+           elif firstInput[0] == "mips":
+                instruction = firstInput[1]
+                hexOutput = m2h(instruction)   # hex() is built in, do not name variables "hex"
+                if hexOutput == 1:  # If m2h() returned 1, it was an error
+                    continue
+                else:    # Otherwise it's normal hex and we can print
+                    print(hexOutput+"\n")
+                    quit()  # On correct, end, no more retries
+    elif "-h" in sys.argv:  # If usage/help requested
+        print("\nUsage 1: \"hex2mips.py\" (w/o arguments) for a \"Y/n\" GUI Mode")
+        print("Usage 2: \"hex2mips.py (hex or mips instruction)\" for Command Line Mode")
+        print("Usage 3: \"hex2mips.py -h\"  To print this message again")
+        print("Example 1: \"hex2mips.py\" with no arguments will bring you to the GUI menu")
+        print("Example 2: \"hex2mips.py 0x018B6820\" will return \"add $t5, $t4, $t3\"")
+        print("Example 3: \"hex2mips.py sw \\$t1, 32\\(\\$s7\\)\" will return \"0xAEE90020\"")
+        print("    -Backslashes needed for the command line mips instruction to hex for any dollar signs or parethesis")
+        print("    -Backslashes not needed for the GUI version\n")
 
-# Driver #
 
-if len(sys.argv) == 1:  # Normal "Y/N" loop when not using
-    print("\nhex2mips by @KyleTimmermans")
-    print("Notice: -Labels must be entered as hexadecimal")
-    print("        -Registers must have $ and be separated by commas")
-    repeat = 'Y'
-    while repeat == 'Y' or repeat == 'y':
-       firstInput = inputSanitize()
-       if firstInput[0] == "hex":
-            binary = firstInput[1]
-            instruction = h2m(binary)
-            if instruction == 1:
-                continue
-            else:
-                print("\n"+instruction+"\n")
-       elif firstInput[0] == "mips":
-            instruction = firstInput[1]
-            hexOutput = m2h(instruction)   # hex() is built in, do not name variables "hex"
-            if hexOutput == 1:  # If m2h() returned 1, it was an error
-                continue
-            else:    # Otherwise it's normal hex and we can print
-                print("\n"+hexOutput+"\n")
-       repeat = input("Convert another hex or instruction value? (Y/n): ")
-elif len(sys.argv) > 1 and "-h" not in sys.argv:  # If hex or mips given
-    while True:  # Keep allowing for retries, and then on correct, end it
-       firstInput = inputSanitize()
-       if firstInput[0] == "hex":
-            binary = firstInput[1]
-            instruction = h2m(binary)
-            if instruction == 1:
-                continue
-            else:
-                print("\n"+instruction+"\n")
-                quit()  # On correct, end, no more retries
-       elif firstInput[0] == "mips":
-            instruction = firstInput[1]
-            hexOutput = m2h(instruction)   # hex() is built in, do not name variables "hex"
-            if hexOutput == 1:  # If m2h() returned 1, it was an error
-                continue
-            else:    # Otherwise it's normal hex and we can print
-                print(hexOutput+"\n")
-                quit()  # On correct, end, no more retries
-elif "-h" in sys.argv:  # If usage/help requested
-    print("\nUsage 1: \"hex2mips.py\" (w/o arguments) for a \"Y/n\" GUI Mode")
-    print("Usage 2: \"hex2mips.py (hex or mips instruction)\" for Command Line Mode")
-    print("Usage 3: \"hex2mips.py -h\"  To print this message again")
-    print("Example 1: \"hex2mips.py\" with no arguments will bring you to the GUI menu")
-    print("Example 2: \"hex2mips.py 0x018B6820\" will return \"add $t5, $t4, $t3\"")
-    print("Example 3: \"hex2mips.py sw \\$t1, 32\\(\\$s7\\)\" will return \"0xAEE90020\"")
-    print("    -Backslashes needed for the command line mips instruction to hex for any dollar signs or parethesis")
-    print("    -Backslashes not needed for the GUI version\n")
+if __name__ == "__main__":
+
+    # For R-Types
+    functcode_dict = {"100000":"add", "100001":"addu", "100010":"sub", "100011":"subu", "100100":"and", "100101":"or", "100111":"nor",
+                      "101010":"slt", "101011":"sltu", "000000":"sll", "000010":"srl", "011000":"mult", "011001":"multu", "011010":"div",
+                      "011011":"divu", "100110":"xor", "001000":"jr", "001100":"syscall", "001101":"break"}
+
+    # For I/J-Type
+    opcode_dict = {"000100":"beq", "000101":"bne", "001000":"addi", "001001":"addiu", "001100":"andi", "001101":"ori", "001010":"slti",
+                   "001011":"sltiu", "001111":"lui", "100011":"lw", "101011":"sw", "001110":"xori", "100000":"lb", "100100":"lbu",
+                   "000010":"j", "000011":"jal"}
+
+    # For register naming
+    register_dict = {"00000":"$zero", "00001":"$at", "00010":"$v0", "00011":"$v1", "00100":"$a0", "00101":"$a1", "00110":"$a2", "00111":"$a3",
+                     "01000":"$t0", "01001":"$t1", "01010":"$t2", "01011":"$t3", "01100":"$t4", "01101":"$t5", "01110":"$t6", "01111":"$t7",
+                     "10000":"$s0", "10001":"$s1", "10010":"$s2", "10011":"$s3", "10100":"$s4", "10101":"$s5", "10110":"$s6", "10111":"$s7",
+                     "11000":"$t8", "11001":"$t9", "11010":"$k0", "11011":"$k1", "11100":"$gp", "11101":"$sp", "11110":"fp", "11111":"$ra"}
+
+
+    # For m2h()
+    normalRFormat = ["add", "addu", "sub", "subu", "and", "or", "nor", "slt", "sltu", "mult", "multu", "div", "divu", "xor"]
+    normalIFormat = ["addi", "addiu", "andi", "ori", "slti", "sltiu", "xori"]
+    
+    main()
