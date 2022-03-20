@@ -2,9 +2,9 @@
 
 '''
 Kyle Timmermans
-Compiled in Python 3.9.7
-Feb 11, 2022
 hex2mips v2.1
+v2.1 Released: Feb 11, 2022
+Compiled in Python 3.9.7
 
 "Entirety of program revolves around converting hex or MIPS instruction
 to binary (op, rs, rt, rd, shamt, funct) and then specifically ordering
