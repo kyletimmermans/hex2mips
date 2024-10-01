@@ -1,6 +1,6 @@
-![Version 2.1](https://img.shields.io/badge/version-v2.1-orange.svg)
-![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)
-![Latest commit](https://img.shields.io/github/last-commit/kyletimmermans/hex2mips?color=darkgreen)
+![Version 2.1](https://img.shields.io/badge/Version-2.1-orange.svg)
+![Python 3.9](https://img.shields.io/badge/Python-3.9-blue.svg)
+![Latest Commit](https://img.shields.io/github/last-commit/kyletimmermans/hex2mips?color=darkgreen&label=Latest%20Commit)
 [![kyletimmermans Twitter](http://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/kyletimmermans)
 
 # <div align="center">hex2mips</div>
